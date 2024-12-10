@@ -11,7 +11,6 @@ import {
 export function Component() {
   const dispatch = useDispatch();
   const cart = useSelector(AppSelectors.selectCart);
-  console.log(cart);
   const cartItems = Object.values(cart) as unknown as {
     _id: string;
     author: string;
@@ -45,7 +44,6 @@ export function Component() {
       </Typography>
 
       <Grid2 container spacing={3}>
-        {/* Render Cart Items */}
         {cartLength > 0 ? (
           cartItems.map(({ _id, author, title, price, quantity }) => (
             <Grid2 key={_id} size={{ xs: 12, sm: 6, md: 4, lg: 3 }}>
@@ -60,7 +58,6 @@ export function Component() {
                   justifyContent: "space-between",
                   height: "100%",
                 }}>
-                {/* Book Image */}
                 <img
                   src={`/assets/books/book-${_id}.png`}
                   alt='Book'
@@ -75,7 +72,6 @@ export function Component() {
                 <Typography variant='body2'>{author}</Typography>
                 <Typography variant='body2'>₹ {price}</Typography>
 
-                {/* Quantity Control */}
                 <Box
                   sx={{
                     display: "flex",
@@ -98,7 +94,6 @@ export function Component() {
                   </Button>
                 </Box>
 
-                {/* Remove Button */}
                 <IconButton
                   sx={{ color: "red", marginTop: 2 }}
                   onClick={() => handleRemoveItem(_id)}>

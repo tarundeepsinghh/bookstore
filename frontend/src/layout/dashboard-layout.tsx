@@ -31,7 +31,9 @@ export function DashboardLayout() {
   const location = useLocation();
   const isBelowMd = useMediaQuery(theme.breakpoints.down("md"));
   const query = useSelector(AppSelectors.selectQuery);
-  const cart = useSelector(AppSelectors.selectCartLength);
+  const cart = useSelector(AppSelectors.selectCart);
+  console.log(cart);
+  const cartItems = Object.values(cart);
 
   return (
     <Box
@@ -130,7 +132,7 @@ export function DashboardLayout() {
                       cursor: "pointer",
                     }}
                   />
-                  {cart > 0 && (
+                  {cartItems.length > 0 && (
                     <div
                       style={{
                         position: "absolute",
@@ -147,7 +149,7 @@ export function DashboardLayout() {
                         justifyContent: "center",
                         padding: "2px",
                       }}>
-                      {cart}
+                      {cartItems.length}
                     </div>
                   )}
                 </div>
@@ -155,7 +157,7 @@ export function DashboardLayout() {
                 <StyledButton size='small' style={{ position: "relative" }}>
                   <ShoppingCartRoundedIcon fontSize='small' />
                   <Typography sx={{ ml: 1 }}>Basket</Typography>
-                  {cart > 0 && (
+                  {cartItems.length > 0 && (
                     <div
                       style={{
                         position: "absolute",
@@ -172,7 +174,7 @@ export function DashboardLayout() {
                         justifyContent: "center",
                         padding: "2px",
                       }}>
-                      {cart}
+                      {cartItems.length}
                     </div>
                   )}
                 </StyledButton>
