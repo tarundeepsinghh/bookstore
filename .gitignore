@@ -1,4 +1,5 @@
-backend/.env
-backend/node_modules
-frontend/.env
-frontend/node_modules
+# Node modules folder
+/node_modules/
+
+# Environment variables file
+.env
