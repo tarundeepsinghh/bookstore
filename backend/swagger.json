@@ -1,0 +1,188 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Bookstore API",
+    "version": "1.0.0",
+    "description": "API for managing a bookstore with search, update, and delete functionalities."
+  },
+  "servers": [
+    {
+      "url": "http://localhost:5000"
+    }
+  ],
+  "paths": {
+    "/api/books/add": {
+      "post": {
+        "summary": "Add a new book",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "title": { "type": "string" },
+                  "author": { "type": "string" },
+                  "category": { "type": "string" },
+                  "description": { "type": "string" },
+                  "price": { "type": "number" }
+                },
+                "required": [
+                  "title",
+                  "author",
+                  "category",
+                  "description",
+                  "price"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": { "description": "Book added successfully" },
+          "400": { "description": "Validation error" }
+        }
+      }
+    },
+    "/api/books/{id}": {
+      "get": {
+        "summary": "Get book by ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" },
+            "description": "ID of the book to get"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Book details",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Book" }
+              }
+            }
+          },
+          "500": { "description": "Server error" }
+        }
+      }
+    },
+    "/api/books/": {
+      "get": {
+        "summary": "Search books",
+        "parameters": [
+          {
+            "name": "keyword",
+            "in": "query",
+            "schema": { "type": "string" },
+            "description": "Keyword to search for books"
+          },
+          {
+            "name": "price",
+            "in": "query",
+            "schema": {
+              "type": "number",
+              "enum": [0, 1, 2, 3, 4]
+            },
+            "description": "Price range: 0 (0-99), 1 (100-199), 2 (200-299), 3 (300+)"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Search results",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/Book" }
+                }
+              }
+            }
+          },
+          "400": { "description": "Keyword is required" },
+          "500": { "description": "Server error" }
+        }
+      }
+    },
+    "/api/books/update/{id}": {
+      "patch": {
+        "summary": "Update a book",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" },
+            "description": "ID of the book to update"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "title": { "type": "string" },
+                  "author": { "type": "string" },
+                  "category": { "type": "string" },
+                  "description": { "type": "string" },
+                  "price": { "type": "number" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Book updated successfully" },
+          "404": { "description": "Book not found" }
+        }
+      }
+    },
+    "/api/books/delete/{id}": {
+      "delete": {
+        "summary": "Delete a book",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" },
+            "description": "ID of the book to delete"
+          }
+        ],
+        "responses": {
+          "200": { "description": "Book deleted successfully" },
+          "404": { "description": "Book not found" }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Book": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "string",
+            "description": "Unique identifier for the book"
+          },
+          "title": { "type": "string", "description": "Title of the book" },
+          "author": { "type": "string", "description": "Author of the book" },
+          "category": {
+            "type": "string",
+            "description": "Category or genre of the book"
+          },
+          "description": {
+            "type": "string",
+            "description": "Brief description of the book"
+          },
+          "price": { "type": "number", "description": "Price of the book" }
+        },
+        "required": ["title", "author", "category", "description", "price"]
+      }
+    }
+  }
+}
