@@ -1,24 +1,19 @@
 import { BookResponse, getBookById } from "@/service/book-service";
-import { AppSelectors } from "@/store/appSlice";
-import {
-  Box,
-  Button,
-  CircularProgress,
-  Container,
-  Typography,
-} from "@mui/material";
+import ShoppingCartRoundedIcon from "@mui/icons-material/ShoppingCartRounded";
+import { Box, Button, Container, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
 import {
   isRouteErrorResponse,
   useParams,
   useRouteError,
 } from "react-router-dom";
-import ShoppingCartRoundedIcon from "@mui/icons-material/ShoppingCartRounded";
+import { BookDetailSkeleton } from "./book-detail.skeleton";
+import { useDispatch } from "react-redux";
+import { addToCart } from "@/store/appSlice";
 
 export function Component() {
   const params = useParams();
-  const index = useSelector(AppSelectors.selectIndex);
+  const dispatch = useDispatch();
 
   const [detail, setDetail] = useState<BookResponse>();
   const [loading, setLoading] = useState(true);
@@ -33,15 +28,7 @@ export function Component() {
   }, [params.id]);
 
   if (loading) {
-    return (
-      <Box
-        display='flex'
-        justifyContent='center'
-        alignItems='center'
-        minHeight='100vh'>
-        <CircularProgress />
-      </Box>
-    );
+    return <BookDetailSkeleton />;
   }
 
   if (!detail) {
@@ -76,7 +63,7 @@ export function Component() {
             overflow: "hidden",
           }}>
           <img
-            src={`/assets/books/book-${index + 1}.png`}
+            src={`/assets/books/book-${detail._id}.png`}
             alt={`${detail.title}`}
             style={{
               width: "100%",
@@ -104,6 +91,16 @@ export function Component() {
           </Typography>
           <Button
             variant='contained'
+            onClick={() =>
+              dispatch(
+                addToCart({
+                  _id: detail._id,
+                  author: detail.author,
+                  title: detail.title,
+                  price: detail.price,
+                })
+              )
+            }
             startIcon={<ShoppingCartRoundedIcon />}
             sx={{ backgroundColor: "#ffce1a", textTransform: "capitalize" }}>
             Add to Basket

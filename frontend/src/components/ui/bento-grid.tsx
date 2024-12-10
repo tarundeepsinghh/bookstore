@@ -1,9 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { setIndex } from "@/store/appSlice";
 import Tooltip from "@mui/material/Tooltip";
 import { ArrowRightIcon } from "@radix-ui/react-icons";
-import { useDispatch } from "react-redux";
 
 const BentoGrid = ({ children }: { children: React.ReactNode }) => {
   return (
@@ -18,9 +16,7 @@ const BentoGrid = ({ children }: { children: React.ReactNode }) => {
   );
 };
 
-// const ArrowIcon = ArrowRightIcon as React.FC<React.SVGProps<SVGSVGElement>>;
-
-const BentoCard = ({
+function BentoCard({
   name,
   author,
   background,
@@ -28,7 +24,7 @@ const BentoCard = ({
   href,
   cta,
   category,
-  index,
+  onClick,
 }: {
   name: string;
   author: string;
@@ -37,10 +33,8 @@ const BentoCard = ({
   href: string;
   cta: string;
   category: string;
-  index: number;
-}) => {
-  const dispatch = useDispatch();
-  const handleClick = () => dispatch(setIndex(index));
+  onClick: () => void;
+}) {
   return (
     <div
       className={cn(
@@ -86,8 +80,9 @@ const BentoCard = ({
           asChild
           size='sm'
           style={{ color: "#ffce1a" }}
-          className='pointer-events-auto '>
-          <a href={href} onClick={handleClick}>
+          className='pointer-events-auto'
+          onClick={onClick}>
+          <a href={href}>
             {cta}
             <ArrowRightIcon className='ml-2 h-4 w-4' />
           </a>
@@ -98,6 +93,6 @@ const BentoCard = ({
       <div className='pointer-events-none absolute inset-0 transform-gpu transition-all duration-300 group-hover:bg-black/[.03] group-hover:dark:bg-neutral-800/10' />
     </div>
   );
-};
+}
 
 export { BentoCard, BentoGrid };

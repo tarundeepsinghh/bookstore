@@ -1,13 +1,14 @@
 import { BentoCard, BentoGrid } from "@/components/ui/bento-grid";
 import { BookResponse, searchBooks } from "@/service/book-service";
-import { AppSelectors } from "@/store/appSlice";
+import { AppSelectors, setIndex } from "@/store/appSlice";
 import { Box } from "@mui/material";
 import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { BookListSkeleton } from "./book-list.skeleton";
 
 export function BookList() {
   const query = useSelector(AppSelectors.selectQuery);
+  const dispatch = useDispatch();
 
   const [books, setBooks] = useState<BookResponse[]>([]);
   const [loading, setLoading] = useState(true);
@@ -24,6 +25,8 @@ export function BookList() {
     })();
   }, [query]);
 
+  const handleClick = (index: number) => dispatch(setIndex(index));
+
   return (
     <Box sx={{ paddingX: { xs: "10px", sm: "20px", md: "30px" } }}>
       {loading ? (
@@ -32,30 +35,18 @@ export function BookList() {
         <BentoGrid>
           {books.map((books, index) => (
             <BentoCard
-              key={index}
+              onClick={() => handleClick(index)}
+              key={books._id}
               name={books.title}
               author={books.author}
               background={
                 <>
                   <img
-                    src={`/assets/books/book-${
-                      index > 11
-                        ? Math.floor(index / 11) === 0
-                          ? 11
-                          : Math.floor(index / 11)
-                        : index + 1
-                    }.png`}
+                    src={`/assets/books/book-${books._id}.png`}
                     alt={`${books.title}`}
                     style={{ alignContent: "center" }}
                   />
                 </>
-              }
-              index={
-                index > 11
-                  ? Math.floor(index / 11) === 0
-                    ? 11
-                    : Math.floor(index / 11)
-                  : index + 1
               }
               category={books.category}
               description={books.description}

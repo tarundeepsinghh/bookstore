@@ -31,6 +31,7 @@ export function DashboardLayout() {
   const location = useLocation();
   const isBelowMd = useMediaQuery(theme.breakpoints.down("md"));
   const query = useSelector(AppSelectors.selectQuery);
+  const cart = useSelector(AppSelectors.selectCartLength);
 
   return (
     <Box
@@ -96,7 +97,7 @@ export function DashboardLayout() {
                 },
               }}
               sx={{
-                flex: 1, // Allow flexibility for search box to take available space
+                flex: 1,
                 width: { xs: "100%", sm: "70%", md: "40%" },
                 "& .MuiOutlinedInput-root": {
                   "& fieldset": {
@@ -120,21 +121,64 @@ export function DashboardLayout() {
               alignItems: "center",
               gap: 2,
             }}>
-            {isBelowMd ? (
-              // Show only Basket icon on smaller screens
-              <ShoppingCartRoundedIcon
-                sx={{
-                  color: "#ffce1a",
-                  cursor: "pointer",
-                }}
-              />
-            ) : (
-              // Show full Basket button on larger screens
-              <StyledButton size='small'>
-                <ShoppingCartRoundedIcon fontSize='small' />
-                <Typography sx={{ ml: 1 }}>Basket</Typography>
-              </StyledButton>
-            )}
+            <a href='/cart'>
+              {isBelowMd ? (
+                <div style={{ position: "relative" }}>
+                  <ShoppingCartRoundedIcon
+                    sx={{
+                      color: "#ffce1a",
+                      cursor: "pointer",
+                    }}
+                  />
+                  {cart > 0 && (
+                    <div
+                      style={{
+                        position: "absolute",
+                        top: 0,
+                        right: 0,
+                        width: "16px",
+                        height: "16px",
+                        borderRadius: "50%",
+                        backgroundColor: "red",
+                        color: "white",
+                        fontSize: "12px",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        padding: "2px",
+                      }}>
+                      {cart}
+                    </div>
+                  )}
+                </div>
+              ) : (
+                <StyledButton size='small' style={{ position: "relative" }}>
+                  <ShoppingCartRoundedIcon fontSize='small' />
+                  <Typography sx={{ ml: 1 }}>Basket</Typography>
+                  {cart > 0 && (
+                    <div
+                      style={{
+                        position: "absolute",
+                        top: -4,
+                        right: -4,
+                        width: "16px",
+                        height: "16px",
+                        borderRadius: "50%",
+                        backgroundColor: "red",
+                        color: "white",
+                        fontSize: "12px",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        padding: "2px",
+                      }}>
+                      {cart}
+                    </div>
+                  )}
+                </StyledButton>
+              )}
+            </a>
+
             <FavoriteBorderRoundedIcon
               sx={{
                 color: "#000",

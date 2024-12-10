@@ -10,20 +10,20 @@ Ensure you have the following installed:
 Node.js (v14 or higher)
 pnpm (for managing dependencies)
 If you don’t have pnpm installed, you can install it globally via npm:
-
 npm install -g pnpm
+
 Backend Setup
+
 The backend is built using Express and MongoDB for managing books.
-
 Navigate to the backend directory:
-
 cd backend
+
 Install dependencies:
-
 pnpm install
-Start the backend server:
 
+Start the backend server:
 node server.js
+
 The backend server will be running on http://localhost:5000 by default. This is where all the book-related API routes will be available.
 
 Frontend Setup
